@@ -33,7 +33,7 @@ def jueganNegras(i):
 
 def anotaMarcador():
     if board.outcome().winner != None:
-print ("\a \a")  # Señal aviso partida decidida.
+        print ("\a \a")  # Señal aviso partida decidida.
         if game.headers['White'] == 'Cliente':
             marcador[0] += int(board.result()[0])
             marcador[1] += int(board.result()[-1])
