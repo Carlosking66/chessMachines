@@ -41,7 +41,22 @@ def anotaMarcador():
             marcador[0] += int(board.result()[-1])
             marcador[1] += int(board.result()[0])
     return 'Cliente ' + str(marcador[0]) + ' - ' + 'Servidor ' + str(marcador[1])
+def NotifMarCli():
+  # Notifica al cliente el resultado final del match.
+  MarcaFinal="Marcador Final: Cliente " + str(marcador[0]) + " Servidor " + str(marcador[1])
+  cliente.send(bytes(MarcaFinal, "utf-8") )
+def ComprobarDuracion(intLMatch):
+  try:
+    if intLMatch > 999:
+      intLMatch=999
+  except:
+    intLMatch=-1
+  finally:
+    return(intLMatch)
 
+  
+  
+# Main()
 configuración = configparser.ConfigParser()
 configuración.read("datos.cfg")
 servidor = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -52,6 +67,7 @@ cliente, addr = servidor.accept()
 print("Conexión establecida!")
 
 intLMatch=int(sys.argv[1])
+intLMatch=ComprobarDuracion(intLMatch) 
 if intLMatch < 1:
     sys.argv[1]="0"
     intLMatch=0
@@ -86,6 +102,7 @@ for i in range(1, intLMatch+1):
 
 engine.quit()
 print("\a Match Finalizado - ")
-print("Marcador Final Cliente %s Servidor%s" %(marcador[0], marcador[1]))  # Marcador Final.
+print("Marcador Final Cliente %s Servidor %s" %(marcador[0], marcador[1]))  # Marcador Final.
+NotifMarCli()
 cliente.close()
 print("FIN")
