@@ -52,6 +52,9 @@ cliente, addr = servidor.accept()
 print("Conexión establecida!")
 
 intLMatch=int(sys.argv[1])
+if intLMatch < 1:
+    sys.argv[1]="0"
+    intLMatch=0
 print("Se van a jugar %s partidas, Good Luck!"%(intLMatch))
 intLMatch=int(intLMatch)
 cliente.send(bytes(sys.argv[1], "utf-8"))    # EEnví (1 byte)a el número de partidas a jugar.
