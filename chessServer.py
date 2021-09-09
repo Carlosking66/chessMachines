@@ -6,7 +6,7 @@ import socket
 import chess
 import chess.engine
 import chess.pgn
-
+import sys  # Admision argumentos.
 def juegaServidor():
     result = engine.play(board, chess.engine.Limit(time=0.1))
     board.push(result.move)
@@ -47,12 +47,18 @@ configuración.read("datos.cfg")
 servidor = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 servidor.bind(("", int(configuración["conexión"]["port"])))
 servidor.listen(1)
+print("Esperando al rival...")
 cliente, addr = servidor.accept()
+print("Conexión establecida!")
 
+intLMatch=int(sys.argv[1])
+print("Se van a jugar %s partidas, Good Luck!"%(intLMatch))
+intLMatch=int(intLMatch)
+cliente.send(bytes(sys.argv[1], "utf-8"))    # EEnví (1 byte)a el número de partidas a jugar.
 engine = chess.engine.SimpleEngine.popen_uci("stockfish")
 marcador = [0, 0]
 
-for i in range(1, 5):
+for i in range(1, intLMatch+1):
     print("Jugando partida " + str(i))
     board = chess.Board()
     game = chess.pgn.Game()
