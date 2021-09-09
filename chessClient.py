@@ -29,7 +29,7 @@ port = int(configuración["conexión"]["port"])
 obj = socket.socket()
 obj.connect((host, port))
 print("Conectado al servidor")
-intLMatch=obj.recv(1) # Recibe (1 bye) el  de partidas a jugar.
+intLMatch=obj.recv(3) # Recibe (3 bytes) el  nº de partidas a jugar.
 strLMatch=intLMatch.decode("utf-8")
 print("Se van a jugar %s partidas. Good Luck!" %(strLMatch))
 
