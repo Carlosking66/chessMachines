@@ -76,5 +76,7 @@ for i in range(1, 5):
     print(game, file=open("partidas.pgn", "a"), end="\n\n")
 
 engine.quit()
+print("\a Match Finalizado - ")
+print("Marcador Final Cliente %s Servidor%s" %(marcador[0], marcador[1]))  # Marcador Final.
 cliente.close()
 print("FIN")
