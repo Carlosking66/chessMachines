@@ -50,7 +50,7 @@ def ShakingHands(intLMatch):
   try:
     if intLMatch > 999:
       intLMatch=999
-    if (int(sys.argv[2]) > 20) or (int(sys.argv[2]) < 1):
+    if (int(sys.argv[2]) > 50) or (int(sys.argv[2]) < 1):
       intLMatch=-1
       
   except:
@@ -62,7 +62,7 @@ def AjustarNivel(intNivel):
   # Devuelve el tiempo de reflexión
   # ajustado al nivel elegido.
   intNivel=int(intNivel)
-  intFactor = (intNivel - 1) * float(0.5)
+  intFactor = (intNivel - 1) * float(0.25)
   return(intNivel *int(0.1) + intFactor)
 
 
@@ -85,7 +85,7 @@ if intLMatch < 1:
 intLMatch=int(intLMatch)
 TiempoDeReflexion=AjustarNivel(sys.argv[2])
 print("Se van a jugar %s partidas a nivel %s, Good Luck!"%(intLMatch, sys.argv[2]))
-print("Tiempo medio de reflexión: %s sec. por jugada. Nivel ajustable entre [1-20]"%(TiempoDeReflexion))
+print("Tiempo medio de reflexión: %s sec. por jugada. Nivel ajustable entre [1-50]"%(TiempoDeReflexion))
 cliente.send(bytes(sys.argv[1], "utf-8"))  # Envía    el número de partidas a jugar.
 engine = chess.engine.SimpleEngine.popen_uci("stockfish")
 marcador = [0, 0]
