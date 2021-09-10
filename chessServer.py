@@ -8,7 +8,7 @@ import chess.engine
 import chess.pgn
 import sys  # Admision argumentos.
 def juegaServidor():
-    result = engine.play(board, chess.engine.Limit(time=0.1))
+    result = engine.play(board, chess.engine.Limit(TiempoDeReflexion))
     board.push(result.move)
     jugadaServidor = bytes(str(result.move), encoding="ascii")
     cliente.send(jugadaServidor)
@@ -45,16 +45,27 @@ def NotifMarCli():
   # Notifica al cliente el resultado final del match.
   MarcaFinal="Marcador Final: Cliente " + str(marcador[0]) + " Servidor " + str(marcador[1])
   cliente.send(bytes(MarcaFinal, "utf-8") )
-def ComprobarDuracion(intLMatch):
+def ShakingHands(intLMatch):
+  # Comprueba algunas   condiciones de juego.  
   try:
     if intLMatch > 999:
       intLMatch=999
+    if (int(sys.argv[2]) > 20) or (int(sys.argv[2]) < 1):
+      intLMatch=-1
+      
   except:
     intLMatch=-1
-  finally:
+  finally:    
     return(intLMatch)
 
-  
+def AjustarNivel(intNivel):
+  # Devuelve el tiempo de reflexión
+  # ajustado al nivel elegido.
+  intNivel=int(intNivel)
+  intFactor = (intNivel - 1) * float(0.5)
+  return(intNivel *int(0.1) + intFactor)
+
+
   
 # Main()
 configuración = configparser.ConfigParser()
@@ -67,15 +78,18 @@ cliente, addr = servidor.accept()
 print("Conexión establecida!")
 
 intLMatch=int(sys.argv[1])
-intLMatch=ComprobarDuracion(intLMatch) 
+intLMatch=ShakingHands(intLMatch) 
 if intLMatch < 1:
     sys.argv[1]="0"
     intLMatch=0
-print("Se van a jugar %s partidas, Good Luck!"%(intLMatch))
 intLMatch=int(intLMatch)
-cliente.send(bytes(sys.argv[1], "utf-8"))    # EEnví (1 byte)a el número de partidas a jugar.
+TiempoDeReflexion=AjustarNivel(sys.argv[2])
+print("Se van a jugar %s partidas a nivel %s, Good Luck!"%(intLMatch, sys.argv[2]))
+print("Tiempo medio de reflexión: %s sec. por jugada. Nivel ajustable entre [1-20]"%(TiempoDeReflexion))
+cliente.send(bytes(sys.argv[1], "utf-8"))  # Envía    el número de partidas a jugar.
 engine = chess.engine.SimpleEngine.popen_uci("stockfish")
 marcador = [0, 0]
+
 
 for i in range(1, intLMatch+1):
     print("Jugando partida " + str(i))
