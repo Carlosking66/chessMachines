@@ -1,6 +1,6 @@
 		ChessMachines
 ***
-Based in the Ramón García Magadán original python code.
+Based in the Ramón[#rgmagadan](https://www.githu.com/rgmagadan) original python code.
 ***
 Confronts two terminals (Client & Server) in aStockfish modulesconfigurable  chess match tthrough TCP sockets.
 ***
